@@ -1,0 +1,83 @@
+{
+  font-family: 'Open Sans', sans-serif;
+  background-color: #eaeaea;
+}
+ul {
+  list-style-type: none;
+}
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ h6 {
+  font-weight: 400;
+}
+ h1 {
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+/* Prevent the text contents of draggable elements from being selectable. */
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+.container .row .panel{
+  background-color: #fff;
+  border: 1px solid #123
+
+}
+.input-group-addon{
+  color:green;
+  font-weight: bold;
+  font-size: 16px
+}
+.panelHeader{
+  text-align: center;
+  color:#006994
+}
+
+body .container .row .panel .entryRowDragged{
+opacity: 0.7
+}
+
+body .container .row .dropAblePanel{
+  border: 1px green;
+  box-shadow: 0px 0px 1.2em green;
+}
+
+body .container .row .removedFromPanel{
+  border: 1px dotted ;  
+}
+#addContainer{
+  margin-top: 20px;
+}
+
+.entry header {
+  color: #fff;
+  text-shadow: #000 0 1px;
+  box-shadow: 5px;
+  padding: 5px;
+  background: -moz-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+  background: -webkit-gradient(linear, left top, right top,
+                               color-stop(0, rgb(0,0,0)),
+                               color-stop(0.50, rgb(79,79,79)),
+                               color-stop(1, rgb(21,21,21)));
+  background: -webkit-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+  background: -ms-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+  border-bottom: 1px solid #ddd;
+  -webkit-border-top-left-radius: 10px;
+  -moz-border-radius-topleft: 10px;
+  -ms-border-radius-topleft: 10px;
+  border-top-left-radius: 10px;
+  -webkit-border-top-right-radius: 10px;
+  -ms-border-top-right-radius: 10px;
+  -moz-border-radius-topright: 10px;
+  border-top-right-radius: 10px;
+}

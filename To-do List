@@ -1,0 +1,200 @@
+Designing a draggable To-do List
+
+Step 1: Layout your page using Bootstrap
+
+set up your basic Bootstrap template
+create a custom.js and a custom.css file for your own styles and javascript logic and make hem available
+your main elements are panes and cards
+use Bootstrap's grid system to layout
+rows must be placed inside a div <div class="container">..</div> for proper alignment and padding
+you can use the class .page-header for a basic header
+.col classes must be direct children of a .row class
+basic pane structure:
+
+<div class="row">    
+        <div class="col-xs-4 pane">
+            // content of To Do pane
+        </div>
+        <div class="col-xs-4 pane">
+            // content of Doing pane
+        </div>
+        <div class="col-xs-4 pane">
+            // content of Done pane
+        </div>
+</div>
+use nesting and offsetting to center the contents of a pane, i.e. the cards and the pane heading
+nesting columns: add a new .row div with a set of columns in a column
+offsetting: <div class="col-xs-offset-2">
+example:
+
+    <div class="col-xs-4 pane">
+        <div class="row">
+            // content for heading
+        </div>
+        <div class="row">
+            <div class="card col-xs-10 col-xs-offset-1">
+                Business Plan Capstone
+            </div>              
+        </div>
+        <div class="row">
+            // content for card 2
+        </div>
+        ...
+    </div>
+don't use any CSS properties to specify width of elements, because this will interfere with the grid system
+
+for a refresher on Bootstrap's grid system, see
+http://getbootstrap.com/examples/grid/
+http://getbootstrap.com/css/#grid
+Step 2: Design your page
+
+pick a decent texture
+pick a color scheme
+pick appropriate fonts
+try using gradients for your cards
+W3 Reference
+Online Gradient Editor
+you could get a transparent background for your panes
+Step 3: JavaScript
+
+Preparation
+
+we are going to use native HTML5 Drag and Drop
+do the following tutorial to get started
+also, take a look at this
+Implementation
+
+what are panes and cards again?
+html objects, more specifically <div>s that have specific CSS classes assigned to them
+how to make html elements draggable?
+<p draggable="true">This is a draggable paragraph.</p>
+what is the document object?
+object representation of the html page
+helps you to select elements from your html file: (panes, cards)
+the DOM document properties
+what are element objects?
+all HTML elements in an html page are represented as element objects
+the DOM object properties will help you manipulating elements in your html page using Javascript
+Document.querySelectorAll
+selecting elements of the document (e.g. panes, cards)
+elementList = document.querySelectorAll(selectors);
+selectors: string containing CSS selectors separated by commas
+elementList: is a list of matching element objects
+what does this do? document.querySelectorAll('.pane .card');
+reference
+Events in JavaScript
+drag: Element is being dragged (updated every 350ms).
+dragstart: A drag operation involving this element is started.
+dragend: A drag operation involving this element is ended (by releasing a mouse button or hitting the escape key).
+dragover: An element is dragged over this element (updated every 350ms).
+dragenter: A dragged element enters this element's drop zone.
+dragleave: A dragged element leaves this element's drop zone.
+drop: An element is dropped onto this element.
+reference
+EventTarget.addEventListener
+concept: assign a handler to an html element to be executed in case a specific (drag) event occurs
+target.addEventListener(type, listener);
+target is an element object that receives the listener
+type is the event type the element has to listen for
+listener in our case, this is a JavaScript function executed in case the event occurs
+reference
+which events should panes and cards listen to?
+what is the following code doing?
+
+Array.prototype.forEach.call(panes, function(p) {
+    p.addEventListener('dragover', handleDragOver);
+    p.addEventListener('dragenter', handleDragEnter);
+    p.addEventListener('dragleave', handleDragLeave);
+    p.addEventListener('drop', handleDropOntoPane);
+});
+handler enabling drop
+
+function handleDragOver(e) {
+
+    /* Omits default behaviour of the element. Required to enable dropping */
+    if (e.preventDefault) {
+        e.preventDefault();
+    }
+
+    /* Some Browsers expect this instead of e.preventDefault(). 
+       Doesn't hurt to do both.*/
+    return false;
+}
+handlers for starting and ending a drag events
+
+function handleDragStart(e) {
+    this.style.opacity = '0.4';
+
+    dragSrcEl = this.parentNode;
+    this.classList.add('dragging');
+}
+
+function handleDragEnd(e) {
+    this.style.opacity = '1.0';
+
+    Array.prototype.forEach.call(cards, function(t) {
+        t.classList.remove('dragging');
+        t.classList.remove('over');
+    });
+
+    Array.prototype.forEach.call(panes, function(t) {
+        t.classList.remove('over');
+    });
+}
+handlers for handling the actual drop event
+
+function handleDropOntoCard(e) {
+    // prevent Browser's default behaviour for drops
+    if (e.stopPropagation) {
+        e.stopPropagation(); 
+    }
+
+    // Don't do anything if dropping the same card we're dragging.
+    if (dragSrcEl !== this.parentNode) {
+        dragSrcEl.parentNode.removeChild(dragSrcEl);
+        this.parentNode.parentNode.appendChild(dragSrcEl);
+    }
+
+    return false;
+}
+
+function handleDropOntoPane(e) {
+    if (e.stopPropagation) {
+        e.stopPropagation();
+    }
+
+    dragSrcEl.parentNode.removeChild(dragSrcEl);
+    this.appendChild(dragSrcEl);
+
+    return false;
+}
+handlers highlighting drop zones
+
+function handleDragEnter(e) {        
+    this.classList.add('over');
+}
+
+function handleDragLeave(e) {
+    this.classList.remove('over');
+}
+Step 4: Animations using CSS
+
+rotate a card while it is being dragged using transform:rotate: http://www.w3schools.com/cssref/css3prtransform.asp
+zoom out a card while it is being dragged using transform:scale: http://www.w3schools.com/css/css3_2dtransforms.asp
+specify cursor while pointing at element: cursor: value as CSS property: http://www.w3schools.com/cssref/prclasscursor.asp
+best pick for your cards is probably cursor: move
+Assignment
+
+Create your own dashboard with draggable story cards.
+
+Use the Bootstrap grid system to layout your page.
+Use CSS to design the look of your page and include animation effects.
+Use decent textures as backgrounds.
+Use gradients colors for cards.
+Use visual effects to highlight cards that are being dragged (e.g. decrease opacity, scale or rotate).
+Use JavaScript to implement the dragging behavior
+Users can drag cards.
+Users can drop onto cards and panes.
+Dropping will remove the card from the source and append it to the target pane (watch out for a clean HTML structure).
+Make your solution available via Github Pages and share the link with me.
+Deadline: Friday, 13th May, midnight
